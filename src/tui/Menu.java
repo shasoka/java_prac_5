@@ -1,5 +1,7 @@
 package tui;
 
+import exceptions.EmptyStringException;
+import exceptions.NegativeNumberException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -61,10 +63,10 @@ public class Menu {
 	}
 	
 	/** Метод, выводящий сообщение об успехе выполнения какой-либо операции. */
-	private static void successMsg() {
+	private static void completeMsg() {
 		System.out.print("""
 					________
-					Success!
+					Complete.
 					""");
 	}
 	
@@ -100,24 +102,43 @@ public class Menu {
 	 */
 	private static Flat newCustom() {
 		System.out.print("\nEnter the city: ");
-		String city = stringIn();
+		String city = rawStringIn();
 		
 		System.out.print("Enter the street: ");
-		String street = stringIn();
+		String street = rawStringIn();
 		
 		System.out.print("Enter the number of the building: ");
-		String buildingNumber = stringIn();
+		String buildingNumber = rawStringIn();
 		
 		System.out.print("Enter the flat number: ");
-		int flatNumber = positiveIntIn(intIn());
+		int flatNumber = intIn();
 		
 		System.out.print("Enter the floor number: ");
-		int floor = positiveIntIn(intIn());
+		int floor = intIn();
 		
 		System.out.print("Enter the square: ");
-		float square = positiveFloatIn(floatIn());
+		float square = floatIn();
 		
-		return new Flat(city, street, buildingNumber, flatNumber, floor, square);
+		try {
+			return new Flat(city, street, buildingNumber, flatNumber, floor, square);
+		} catch (EmptyStringException | NegativeNumberException e) {
+			System.err.println("Caught: " + e);
+			return newEmpty();
+		}
+	}
+	
+	/**
+	 * Метод, создающий новый кастомный объект класса Flat.
+	 *
+	 * @return новый элемент класса Flat
+	 */
+	private static Flat newEmpty() {
+		try {
+			return new Flat();
+		} catch (NegativeNumberException | EmptyStringException e) {
+			System.err.println("Caught: " + e);
+			return null;
+		}
 	}
 	
 	/**
@@ -197,50 +218,50 @@ public class Menu {
 		System.out.print("\nEnter the new value: ");
 		switch (field) {
 			case 1 -> {
-				newStr = stringIn();
+				newStr = rawStringIn();
 				try {
 					choosenElem.setCity(newStr);
-				} catch (IllegalArgumentException e) {
+				} catch (EmptyStringException e) {
 					noChange();
 				}
 			}
 			case 2 -> {
-				newStr = stringIn();
+				newStr = rawStringIn();
 				try {
 					choosenElem.setStreet(newStr);
-				} catch (IllegalArgumentException e) {
+				} catch (EmptyStringException e) {
 					noChange();
 				}
 			}
 			case 3 -> {
-				newStr = stringIn();
+				newStr = rawStringIn();
 				try {
 					choosenElem.setBuildingNumber(newStr);
-				} catch (IllegalArgumentException e) {
+				} catch (EmptyStringException e) {
 					noChange();
 				}
 			}
 			case 4 -> {
-				newInt = positiveIntIn(intIn());
+				newInt = intIn();
 				try {
 					choosenElem.setFlatNumber(newInt);
-				} catch (IllegalArgumentException e) {
+				} catch (IllegalArgumentException | NegativeNumberException e) {
 					noChange();
 				}
 			}
 			case 5 -> {
-				newInt = positiveIntIn(intIn());
+				newInt = intIn();
 				try {
 					choosenElem.setFloor(newInt);
-				} catch (IllegalArgumentException e) {
+				} catch (NegativeNumberException e) {
 					noChange();
 				}
 			}
 			case 6 -> {
-				newFloat = positiveFloatIn(floatIn());
+				newFloat = floatIn();
 				try {
 					choosenElem.setSquare(newFloat);
-				} catch (IllegalArgumentException e) {
+				} catch (NegativeNumberException e) {
 					noChange();
 				}
 			}
@@ -274,7 +295,7 @@ public class Menu {
 			case 7 -> arr.sort(Comparator.comparing(Flat::getCost));
 		}
 		arrPrint(arr);
-		successMsg();
+		completeMsg();
 	}
 	
 	/** Метод, выводящий на экран меню пользователя и обрабатывающий взаимодействия с ним. */
@@ -292,15 +313,11 @@ public class Menu {
 			switch (choice) {
 				case 1 -> printMenu();  // вывод меню
 				
-				case 2 -> {  // добавить пустой элемент
-					flatsArray.add(new Flat());
-					successMsg();
-				}
+				case 2 ->  // добавить пустой элемент
+					flatsArray.add(newEmpty());
 				
-				case 3 -> {  // добавить кастомный элемент
+				case 3 ->  // добавить кастомный элемент
 					flatsArray.add(newCustom());
-					successMsg();
-				}
 				
 				case 4 -> {  // изменить элемент
 					if (emptyCheck(flatsArray))
@@ -314,7 +331,6 @@ public class Menu {
 						continue;
 					arrPrint(flatsArray);
 					delElem(flatsArray);
-					successMsg();
 				}
 				
 				case 6 -> {  // вывести таблицу
@@ -336,7 +352,6 @@ public class Menu {
 					if (emptyCheck(flatsArray))
 						continue;
 					WriteFile(flatsArray);
-					successMsg();
 				}
 				
 				case 9 -> {  // загрузить из файла
@@ -344,7 +359,6 @@ public class Menu {
 					if (temp != null && temp.size() > 0) {
 						flatsArray = temp;
 						arrPrint(flatsArray);
-						successMsg();
 					}
 					else {
 						noDataMsg();
@@ -359,10 +373,13 @@ public class Menu {
 				default -> System.err.print("Incorrect choice! Try again: ");
 			}
 			
+			if (choice > 1 && choice < 10) {
+				completeMsg();
+			}
+			
 			if (choice < 10 && choice > 0) {
 				waitForInputMsg();
 			}
-			
 		}
 	}
 }

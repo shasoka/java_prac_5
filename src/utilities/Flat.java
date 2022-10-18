@@ -1,5 +1,7 @@
 package utilities;
 
+import exceptions.EmptyStringException;
+import exceptions.NegativeNumberException;
 import java.io.Serializable;
 
 /**
@@ -31,9 +33,9 @@ public class Flat implements Serializable {
 	private String buildingNumber;
 	
 	/** Конструктор класса по умолчанию. */
-	public Flat() {
-		this("none", "none", "none", 0, 0, 0);
-		this.cost = 0;
+	public Flat() throws EmptyStringException, NegativeNumberException {
+		this("none", "none", "none", 1, 1, 1);
+		this.cost = 1;
 	}
 	
 	/**
@@ -47,13 +49,25 @@ public class Flat implements Serializable {
 	 * @param square площадь
 	 */
 	public Flat(String city, String street, String buildingNumber, int flatNumber, int floor,
-			float square) {
+			float square) throws EmptyStringException, NegativeNumberException {
+		stringFieldChecker(city);
 		this.city = city;
+		
+		stringFieldChecker(street);
 		this.street = street;
+		
+		stringFieldChecker(buildingNumber);
 		this.buildingNumber = buildingNumber;
+		
+		numericFieldChecker(flatNumber);
 		this.flatNumber = flatNumber;
+		
+		numericFieldChecker(floor);
 		this.floor = floor;
+		
+		numericFieldChecker(square);
 		this.square = square;
+		
 		this.cost = countCost();
 	}
 	
@@ -91,7 +105,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param square площадь
 	 */
-	public void setSquare(float square) {
+	public void setSquare(float square) throws NegativeNumberException {
 		numericFieldChecker(square);
 		this.square = square;
 	}
@@ -109,7 +123,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param floor этаж
 	 */
-	public void setFloor(int floor) {
+	public void setFloor(int floor) throws NegativeNumberException {
 		numericFieldChecker((float)floor);
 		this.floor = floor;
 	}
@@ -127,7 +141,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param flatNumber номер квартиры
 	 */
-	public void setFlatNumber(int flatNumber) {
+	public void setFlatNumber(int flatNumber) throws NegativeNumberException {
 		numericFieldChecker((float)flatNumber);
 		this.flatNumber = flatNumber;
 	}
@@ -145,7 +159,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param city город
 	 */
-	public void setCity(String city) {
+	public void setCity(String city) throws EmptyStringException {
 		stringFieldChecker(city);
 		this.city = city;
 	}
@@ -163,7 +177,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param street улица
 	 * */
-	public void setStreet(String street) {
+	public void setStreet(String street) throws EmptyStringException {
 		stringFieldChecker(street);
 		this.street = street;
 	}
@@ -181,7 +195,7 @@ public class Flat implements Serializable {
 	 *
 	 * @param buildingNumber номер здания
 	 */
-	public void setBuildingNumber(String buildingNumber) {
+	public void setBuildingNumber(String buildingNumber) throws EmptyStringException {
 		stringFieldChecker(buildingNumber);
 		this.buildingNumber = buildingNumber;
 	}
@@ -200,9 +214,9 @@ public class Flat implements Serializable {
 	 *
 	 * @param value значение поля
 	 */
-	private static void numericFieldChecker(float value) {
+	private static void numericFieldChecker(float value) throws NegativeNumberException {
 		if (value <= 0) {
-			throw new IllegalArgumentException();
+			throw new NegativeNumberException("the value of the field must be greater than zero", value);
 		}
 	}
 	
@@ -211,9 +225,9 @@ public class Flat implements Serializable {
 	 *
 	 * @param value значение поля
 	 */
-	private static void stringFieldChecker(String value) {
+	private static void stringFieldChecker(String value) throws EmptyStringException {
 		if (value.isEmpty() || value.trim().isEmpty()) {
-			throw new IllegalArgumentException();
+			throw new EmptyStringException("the value of the field must be greater than zero", value);
 		}
 	}
 	

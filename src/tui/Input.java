@@ -121,4 +121,13 @@ public class Input {
 		}
 	}
 	
+	/**
+	 * Метод, считывающий введенную пользователем строку.
+	 *
+	 * @return считанная строка
+	 */
+	public static String rawStringIn() {
+		return new Scanner(System.in).nextLine();
+	}
+	
 }
