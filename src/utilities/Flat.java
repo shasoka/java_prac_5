@@ -32,7 +32,12 @@ public class Flat implements Serializable {
 	/** Поле номера дома */
 	private String buildingNumber;
 	
-	/** Конструктор класса по умолчанию. */
+	/**
+	 * Конструктор класса по умолчанию.
+	 *
+	 * @throws EmptyStringException исключение недопустимого значения строкового поля
+	 * @throws NegativeNumberException исключение недопустимого значения числового поля
+	 */
 	public Flat() throws EmptyStringException, NegativeNumberException {
 		this("none", "none", "none", 0, 0, 0);
 		this.cost = 0;
@@ -47,6 +52,9 @@ public class Flat implements Serializable {
 	 * @param flatNumber номер квартиры
 	 * @param floor этаж
 	 * @param square площадь
+	 *
+	 * @throws EmptyStringException исключение недопустимого значения строкового поля
+	 * @throws NegativeNumberException исключение недопустимого значения числового поля
 	 */
 	public Flat(String city, String street, String buildingNumber, int flatNumber, int floor,
 			float square) throws EmptyStringException, NegativeNumberException {
@@ -104,6 +112,8 @@ public class Flat implements Serializable {
 	/** Сеттер площади.
 	 *
 	 * @param square площадь
+	 *
+	 * @throws NegativeNumberException исключение недопустимого значения числового поля
 	 */
 	public void setSquare(float square) throws NegativeNumberException {
 		numericFieldChecker(square);
@@ -122,6 +132,8 @@ public class Flat implements Serializable {
 	/** Сеттер этажа.
 	 *
 	 * @param floor этаж
+	 *
+	 * @throws NegativeNumberException исключение недопустимого значения числового поля
 	 */
 	public void setFloor(int floor) throws NegativeNumberException {
 		numericFieldChecker((float)floor);
@@ -140,6 +152,8 @@ public class Flat implements Serializable {
 	/** Сеттер номера квартиры.
 	 *
 	 * @param flatNumber номер квартиры
+	 *
+	 * @throws NegativeNumberException исключение недопустимого значения числового поля
 	 */
 	public void setFlatNumber(int flatNumber) throws NegativeNumberException {
 		numericFieldChecker((float)flatNumber);
@@ -158,6 +172,8 @@ public class Flat implements Serializable {
 	/** Сеттер улицы.
 	 *
 	 * @param city город
+	 *
+	 * @throws EmptyStringException исключение недопустимого значения строкового поля
 	 */
 	public void setCity(String city) throws EmptyStringException {
 		stringFieldChecker(city);
@@ -176,7 +192,9 @@ public class Flat implements Serializable {
 	/** Сеттер улицы.
 	 *
 	 * @param street улица
-	 * */
+	 *
+	 * @throws EmptyStringException исключение недопустимого значения строкового поля
+	 */
 	public void setStreet(String street) throws EmptyStringException {
 		stringFieldChecker(street);
 		this.street = street;
@@ -194,6 +212,8 @@ public class Flat implements Serializable {
 	/** Сеттер номера здания.
 	 *
 	 * @param buildingNumber номер здания
+	 *
+	 * @throws EmptyStringException исключение недопустимого значения строкового поля
 	 */
 	public void setBuildingNumber(String buildingNumber) throws EmptyStringException {
 		stringFieldChecker(buildingNumber);

@@ -100,6 +100,8 @@ public class Menu {
 	 * Метод, создающий новый кастомный объект класса Flat.
 	 *
 	 * @return новый элемент класса Flat
+	 *
+	 * @throws InitialisationException исключение создания объекта класса Flat
 	 */
 	private static Flat newCustom() throws InitialisationException {
 		System.out.print("\nEnter the city: ");
@@ -166,13 +168,16 @@ public class Menu {
 	 */
 	private static void editElem (ArrayList<Flat> arr) {
 		System.out.print("\nEnter the id of the element you want to edit: ");
-		int id;
-		do {
-			id = positiveIntIn(intIn());
-			if (id > arr.size()) {
-				System.err.print("Incorrect choice! Try again: ");
-			}
-		} while (id > arr.size());
+//		int id;
+//		do {
+//			id = positiveIntIn(intIn());
+//			if (id > arr.size()) {
+//				System.err.print("Incorrect choice! Try again: ");
+//			}
+//		} while (id > arr.size());
+		
+		int id = positiveIntIn(intIn());
+		assert id <= arr.size() : "Incorrect choice!";
 		
 		Flat choosenElem = arr.get(id - 1);
 		
