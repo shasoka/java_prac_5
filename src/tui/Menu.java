@@ -1,6 +1,7 @@
 package tui;
 
 import exceptions.EmptyStringException;
+import exceptions.InitialisationException;
 import exceptions.NegativeNumberException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -100,7 +101,7 @@ public class Menu {
 	 *
 	 * @return новый элемент класса Flat
 	 */
-	private static Flat newCustom() {
+	private static Flat newCustom() throws InitialisationException {
 		System.out.print("\nEnter the city: ");
 		String city = rawStringIn();
 		
@@ -122,22 +123,7 @@ public class Menu {
 		try {
 			return new Flat(city, street, buildingNumber, flatNumber, floor, square);
 		} catch (EmptyStringException | NegativeNumberException e) {
-			System.err.println("Caught: " + e);
-			return newEmpty();
-		}
-	}
-	
-	/**
-	 * Метод, создающий новый кастомный объект класса Flat.
-	 *
-	 * @return новый элемент класса Flat
-	 */
-	private static Flat newEmpty() {
-		try {
-			return new Flat();
-		} catch (NegativeNumberException | EmptyStringException e) {
-			System.err.println("Caught: " + e);
-			return null;
+			throw new InitialisationException("illegal fields' values", e);
 		}
 	}
 	
@@ -222,49 +208,61 @@ public class Menu {
 				try {
 					choosenElem.setCity(newStr);
 				} catch (EmptyStringException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 2 -> {
 				newStr = rawStringIn();
 				try {
 					choosenElem.setStreet(newStr);
 				} catch (EmptyStringException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 3 -> {
 				newStr = rawStringIn();
 				try {
 					choosenElem.setBuildingNumber(newStr);
 				} catch (EmptyStringException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 4 -> {
 				newInt = intIn();
 				try {
 					choosenElem.setFlatNumber(newInt);
-				} catch (IllegalArgumentException | NegativeNumberException e) {
+				} catch (NegativeNumberException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 5 -> {
 				newInt = intIn();
 				try {
 					choosenElem.setFloor(newInt);
 				} catch (NegativeNumberException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 6 -> {
 				newFloat = floatIn();
 				try {
 					choosenElem.setSquare(newFloat);
 				} catch (NegativeNumberException e) {
+					e.printStackTrace();
 					noChange();
 				}
 			}
+			
 			case 7 -> System.out.print("\nCurrent value: " + choosenElem.getCost() +
 					" - calculated immutable field\n");
 		}
@@ -295,7 +293,6 @@ public class Menu {
 			case 7 -> arr.sort(Comparator.comparing(Flat::getCost));
 		}
 		arrPrint(arr);
-		completeMsg();
 	}
 	
 	/** Метод, выводящий на экран меню пользователя и обрабатывающий взаимодействия с ним. */
@@ -313,11 +310,21 @@ public class Menu {
 			switch (choice) {
 				case 1 -> printMenu();  // вывод меню
 				
-				case 2 ->  // добавить пустой элемент
-					flatsArray.add(newEmpty());
+				case 2 -> {  // добавить пустой элемент
+					try {
+						flatsArray.add(new Flat());
+					} catch (NegativeNumberException | EmptyStringException e) {
+						e.printStackTrace();
+					}
+				}
 				
-				case 3 ->  // добавить кастомный элемент
-					flatsArray.add(newCustom());
+				case 3 -> {  // добавить кастомный элемент
+					try {
+						flatsArray.add(newCustom());
+					} catch (InitialisationException e) {
+						e.printStackTrace();
+					}
+				}
 				
 				case 4 -> {  // изменить элемент
 					if (emptyCheck(flatsArray))

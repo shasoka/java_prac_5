@@ -34,8 +34,8 @@ public class Flat implements Serializable {
 	
 	/** Конструктор класса по умолчанию. */
 	public Flat() throws EmptyStringException, NegativeNumberException {
-		this("none", "none", "none", 1, 1, 1);
-		this.cost = 1;
+		this("none", "none", "none", 0, 0, 0);
+		this.cost = 0;
 	}
 	
 	/**
@@ -227,7 +227,7 @@ public class Flat implements Serializable {
 	 */
 	private static void stringFieldChecker(String value) throws EmptyStringException {
 		if (value.isEmpty() || value.trim().isEmpty()) {
-			throw new EmptyStringException("the value of the field must be greater than zero", value);
+			throw new EmptyStringException("the value of the field can not be null or \"\"", value);
 		}
 	}
 	
