@@ -1,5 +1,11 @@
+import tui.Menu;
+
+/** Класс, содержащий точку входа. */
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
+	
+	/** Метод main - точка входа. */
+	public static void main(String[] args) {
+		Menu.menu();
+	}
+	
 }
