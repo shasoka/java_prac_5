@@ -7,23 +7,13 @@ package exceptions;
  */
 public class NegativeNumberException extends Exception {
   
-  /** Строка, вызвавшая исключение. */
-  private final float number;
-  
-  /** Метод, возвращающий значение поля number. */
-  public float getNumber() {
-    return number;
-  }
-  
   /**
-   * Параметризованный конструктор класса NegativeNumberException.
-   *
-   * @param message сообщение, выводимое при возникновении исключения
-   * @param number переданное число
-   */
-  public NegativeNumberException(String message, float number) {
+	 * Параметризованный конструктор класса NegativeNumberException.
+	 *
+	 * @param message сообщение, выводимое при возникновении исключения
+	 */
+  public NegativeNumberException(String message) {
     super(message);
-    this.number = number;
   }
   
 }

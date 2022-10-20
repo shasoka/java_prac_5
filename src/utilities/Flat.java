@@ -236,7 +236,8 @@ public class Flat implements Serializable {
 	 */
 	private static void numericFieldChecker(float value) throws NegativeNumberException {
 		if (value <= 0) {
-			throw new NegativeNumberException("the value of the field must be greater than zero", value);
+			throw new NegativeNumberException("the value of the field must be greater than zero. Got: "
+					+ value);
 		}
 	}
 	
@@ -247,7 +248,7 @@ public class Flat implements Serializable {
 	 */
 	private static void stringFieldChecker(String value) throws EmptyStringException {
 		if (value.isEmpty() || value.trim().isEmpty()) {
-			throw new EmptyStringException("the value of the field can not be null or \"\"", value);
+			throw new EmptyStringException("the value of the field can not be null\"\"");
 		}
 	}
 	
